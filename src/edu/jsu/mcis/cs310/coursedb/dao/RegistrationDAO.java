@@ -27,7 +27,16 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-                // INSERT YOUR CODE HERE
+              
+                String query = "INSERT INTO registration (studentid, termid, crn) VALUES (?, ?, ?)";
+                ps = conn.prepareStatement(query);
+                ps.setInt(1, studentid);
+                ps.setInt(2, termid);
+                ps.setInt(3, crn);
+                
+                int rows = ps.executeUpdate(); 
+                result = (rows > 0);
+                
                 
             }
             
@@ -58,7 +67,16 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-                // INSERT YOUR CODE HERE
+               
+                String query = "DELETE FROM registration WHERE studentid = ? AND termid = ? AND crn = ?";
+                ps = conn.prepareStatement(query);
+                ps.setInt(1, studentid);
+                ps.setInt(2, termid);
+                ps.setInt(3, crn);
+                
+                int rows = ps.executeUpdate(); 
+                result = (rows > 0);
+                
                 
             }
             
@@ -88,7 +106,15 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-                // INSERT YOUR CODE HERE
+                
+                String query = "DELETE FROM registration WHERE studentid = ? AND termid = ?";
+                ps = conn.prepareStatement(query);
+                ps.setInt(1, studentid);
+                ps.setInt(2, termid);
+                
+                int rows = ps.executeUpdate(); 
+                result = (rows > 0);
+                
                 
             }
             
@@ -120,7 +146,16 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-                // INSERT YOUR CODE HERE
+              
+                String query = "SELECT studentid, termid, crn FROM registration WHERE studentid = ? AND termid = ? ORDER BY crn";
+                
+                ps = conn.prepareStatement(query);
+                ps.setInt(1, studentid);
+                ps.setInt(2, termid);
+                
+                rs = ps.executeQuery(); 
+                result = DAOUtility.getResultSetAsJson(rs);
+               
                 
             }
             
