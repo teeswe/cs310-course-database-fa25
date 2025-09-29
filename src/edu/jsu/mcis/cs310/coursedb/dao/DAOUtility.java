@@ -25,11 +25,11 @@ public class DAOUtility {
                     for (int i = 1; i <= columnCount; i++) {
                         String columnName = metadata.getColumnName(i);
                         
-                        // THIS BLOCK IS THE CRITICAL FIX:
+                        
                         Object columnValue = rs.getObject(i);
                         
                         if (columnValue != null) {
-                            // Converts all data (including DB numbers) to strings for JSON
+                            
                             columnValue = columnValue.toString(); 
                         }
                         

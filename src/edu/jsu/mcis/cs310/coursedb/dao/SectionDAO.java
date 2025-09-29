@@ -29,7 +29,7 @@ public class SectionDAO {
             
             if (conn.isValid(0)) {
                 
-              
+             
                 
                 ps = conn.prepareStatement(QUERY_FIND);
                 

@@ -13,7 +13,7 @@ public class RegistrationDAO {
         this.daoFactory = daoFactory;
     }
     
-    // Updated CRN to int to match the unit test file
+    
     public boolean create(int studentid, int termid, int crn) {
         
         boolean result = false;
@@ -30,7 +30,7 @@ public class RegistrationDAO {
                 ps = conn.prepareStatement(sql);
                 ps.setInt(1, studentid);
                 ps.setInt(2, termid);
-                ps.setInt(3, crn); // Corrected to setInt
+                ps.setInt(3, crn); 
                 
                 result = (ps.executeUpdate() == 1);
                 
@@ -50,7 +50,7 @@ public class RegistrationDAO {
         
     }
 
-    // Updated CRN to int to match the unit test file
+   
     public boolean delete(int studentid, int termid, int crn) {
         
         boolean result = false;
@@ -67,7 +67,7 @@ public class RegistrationDAO {
                 ps = conn.prepareStatement(sql);
                 ps.setInt(1, studentid);
                 ps.setInt(2, termid);
-                ps.setInt(3, crn); // Corrected to setInt
+                ps.setInt(3, crn); 
                 
                 result = (ps.executeUpdate() == 1);
                 
