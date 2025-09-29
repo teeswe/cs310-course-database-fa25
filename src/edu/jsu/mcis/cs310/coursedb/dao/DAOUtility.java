@@ -13,33 +13,31 @@ public class DAOUtility {
         JsonArray records = new JsonArray();
         
         try {
-        
+            
             if (rs != null) {
 
-                
-                ResultSetMetaData rsmd = rs.getMetaData();
-                int columnCount = rsmd.getColumnCount();
+                ResultSetMetaData metadata = rs.getMetaData();
+                int columnCount = metadata.getColumnCount();
 
                 while (rs.next()) {
-                    JsonObject rowObject = new JsonObject();
-
+                    JsonObject record = new JsonObject();
+                    
                     for (int i = 1; i <= columnCount; i++) {
-                        String columnName = rsmd.getColumnName(i);
-                        Object value = rs.getObject(i);
-
+                        String columnName = metadata.getColumnName(i);
                         
-                        if (value instanceof java.sql.Time ||
-                            value instanceof java.sql.Date ||
-                            value instanceof java.sql.Timestamp) {
-                            value = value.toString();
+                        // THIS BLOCK IS THE CRITICAL FIX:
+                        Object columnValue = rs.getObject(i);
+                        
+                        if (columnValue != null) {
+                            // Converts all data (including DB numbers) to strings for JSON
+                            columnValue = columnValue.toString(); 
                         }
-
-                        rowObject.put(columnName, value);
+                        
+                        record.put(columnName, columnValue);
                     }
-
-                    records.add(rowObject);
+                    
+                    records.add(record);
                 }
-                
 
             }
             

@@ -3,8 +3,7 @@ package edu.jsu.mcis.cs310.coursedb.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
+import java.sql.SQLException;
 
 public class RegistrationDAO {
     
@@ -14,12 +13,12 @@ public class RegistrationDAO {
         this.daoFactory = daoFactory;
     }
     
+    // Updated CRN to int to match the unit test file
     public boolean create(int studentid, int termid, int crn) {
         
         boolean result = false;
         
         PreparedStatement ps = null;
-        ResultSet rs = null;
         
         try {
             
@@ -27,16 +26,13 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-              
-                String query = "INSERT INTO registration (studentid, termid, crn) VALUES (?, ?, ?)";
-                ps = conn.prepareStatement(query);
+                String sql = "INSERT INTO registration (studentid, termid, crn) VALUES (?, ?, ?)";
+                ps = conn.prepareStatement(sql);
                 ps.setInt(1, studentid);
                 ps.setInt(2, termid);
-                ps.setInt(3, crn);
+                ps.setInt(3, crn); // Corrected to setInt
                 
-                int rows = ps.executeUpdate(); 
-                result = (rows > 0);
-                
+                result = (ps.executeUpdate() == 1);
                 
             }
             
@@ -46,7 +42,6 @@ public class RegistrationDAO {
         
         finally {
             
-            if (rs != null) { try { rs.close(); } catch (Exception e) { e.printStackTrace(); } }
             if (ps != null) { try { ps.close(); } catch (Exception e) { e.printStackTrace(); } }
             
         }
@@ -55,6 +50,7 @@ public class RegistrationDAO {
         
     }
 
+    // Updated CRN to int to match the unit test file
     public boolean delete(int studentid, int termid, int crn) {
         
         boolean result = false;
@@ -67,16 +63,13 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-               
-                String query = "DELETE FROM registration WHERE studentid = ? AND termid = ? AND crn = ?";
-                ps = conn.prepareStatement(query);
+                String sql = "DELETE FROM registration WHERE studentid = ? AND termid = ? AND crn = ?";
+                ps = conn.prepareStatement(sql);
                 ps.setInt(1, studentid);
                 ps.setInt(2, termid);
-                ps.setInt(3, crn);
+                ps.setInt(3, crn); // Corrected to setInt
                 
-                int rows = ps.executeUpdate(); 
-                result = (rows > 0);
-                
+                result = (ps.executeUpdate() == 1);
                 
             }
             
@@ -106,15 +99,12 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-                
-                String query = "DELETE FROM registration WHERE studentid = ? AND termid = ?";
-                ps = conn.prepareStatement(query);
+                String sql = "DELETE FROM registration WHERE studentid = ? AND termid = ?";
+                ps = conn.prepareStatement(sql);
                 ps.setInt(1, studentid);
                 ps.setInt(2, termid);
                 
-                int rows = ps.executeUpdate(); 
-                result = (rows > 0);
-                
+                result = (ps.executeUpdate() > 0);
                 
             }
             
@@ -138,7 +128,6 @@ public class RegistrationDAO {
         
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ResultSetMetaData rsmd = null;
         
         try {
             
@@ -146,16 +135,14 @@ public class RegistrationDAO {
             
             if (conn.isValid(0)) {
                 
-              
-                String query = "SELECT studentid, termid, crn FROM registration WHERE studentid = ? AND termid = ? ORDER BY crn";
-                
-                ps = conn.prepareStatement(query);
+                String sql = "SELECT studentid, termid, crn FROM registration WHERE studentid = ? AND termid = ? ORDER BY crn";
+                ps = conn.prepareStatement(sql);
                 ps.setInt(1, studentid);
                 ps.setInt(2, termid);
                 
-                rs = ps.executeQuery(); 
+                rs = ps.executeQuery();
+                
                 result = DAOUtility.getResultSetAsJson(rs);
-               
                 
             }
             
